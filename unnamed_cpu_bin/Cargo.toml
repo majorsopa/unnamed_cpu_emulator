@@ -1,0 +1,7 @@
+[package]
+name = "unnamed_cpu_bin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+unnamed_cpu_lib = { path = "../unnamed_cpu_lib" }
