@@ -11,40 +11,30 @@ impl Flags {
     pub fn new() -> Flags {
         Flags(0)
     }
-    
-    pub fn set_carry(&mut self, value: bool) {
+
+    pub fn set_flag(&mut self, flag: u16) {
+        self.0 |= flag;
+    }
+
+    pub fn clear_flag(&mut self, flag: u16) {
+        self.0 &= !flag;
+    }
+
+    pub fn get_flag(&self, flag: u16) -> bool {
+        (self.0 & flag) == flag
+    }
+
+    pub fn set_flag_to_bool(&mut self, flag: u16, value: bool) {
         if value {
-            self.0 |= 1;
+            self.set_flag(flag);
         } else {
-            self.0 &= !1;
+            self.clear_flag(flag);
         }
     }
-    
-    pub fn set_zero(&mut self, value: bool) {
-        if value {
-            self.0 |= 2;
-        } else {
-            self.0 &= !2;
-        }
-    }
-    
-    pub fn set_negative(&mut self, value: bool) {
-        if value {
-            self.0 |= 4;
-        } else {
-            self.0 &= !4;
-        }
-    }
-    
-    pub fn get_carry(&self) -> bool {
-        (self.0 & 1) != 0
-    }
-    
-    pub fn get_zero(&self) -> bool {
-        (self.0 & 2) != 0
-    }
-    
-    pub fn get_negative(&self) -> bool {
-        (self.0 & 4) != 0
-    }
+}
+
+pub enum FlagAliases {
+    Carry,
+    Zero,
+    Negative,
 }

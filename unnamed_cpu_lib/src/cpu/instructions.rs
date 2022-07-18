@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum Instruction {
     PUSH,       // pushes to stack
     POP,        // pops from stack
@@ -7,6 +8,7 @@ pub enum Instruction {
     CMP,        // compares two values, setting a flag if they're equal or not
     JEQ,        // jumps to address if flag is set
     JNE,        // jumps to address if flag is not set
+    INT,        // interrupts
 
 
     ADD,        // adds two values

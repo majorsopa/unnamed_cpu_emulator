@@ -21,8 +21,13 @@ impl Registers {
     pub fn get_register(&self, register: u16) -> u16 {
         self.0[register as usize]
     }
+
+    pub fn get_mut_register(&mut self, register: u16) -> &mut u16 {
+        &mut self.0[register as usize]
+    }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum RegisterAliases {
     // scratchable
     Accumulator,
@@ -32,4 +37,6 @@ pub enum RegisterAliases {
     
     // don't fw these
     StackPointer,
+    ReturnAddress,
+    InstructionPointer,
 }
