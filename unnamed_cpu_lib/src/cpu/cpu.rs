@@ -5,7 +5,7 @@ use super::{
     Operation, 
     Instruction, 
     RegisterAliases, 
-    FlagAliases
+    FlagAliases,
 };
 
 pub struct Cpu {
@@ -23,8 +23,12 @@ impl Cpu {
         }
     }
 
+    pub fn cpu_pop(&mut self) -> u16 {
+        self.stack.pop(&mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16))
+    }
+
     // the main implementation of the CPU
-    pub fn perform_operation(&mut self, operation: Operation) {
+    pub fn perform_operation(&mut self, operation: Operation) -> bool {
         match operation {
             Operation::Nullary(instruction) => {
                 match instruction {
@@ -33,6 +37,7 @@ impl Cpu {
                     },
                     Instruction::INT => {
                         self.int();
+                        return true;
                     },
                     _ => {
                         panic!("unimplemented nullary instruction: {:?}", instruction);
@@ -118,6 +123,7 @@ impl Cpu {
                 }
             }
         }
+        false
     }
 
     fn dec(&mut self, oprd: u16) {

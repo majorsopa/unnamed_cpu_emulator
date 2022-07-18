@@ -7,6 +7,7 @@ order of registers:
 
 4: stack pointer
 */
+#[derive(Debug, Clone, Copy)]
 pub struct Registers([u16; 16]);
 
 impl Registers {

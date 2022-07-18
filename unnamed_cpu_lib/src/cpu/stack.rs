@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, Copy)]
 pub struct Stack([u16; 64]);
 
 impl Stack {

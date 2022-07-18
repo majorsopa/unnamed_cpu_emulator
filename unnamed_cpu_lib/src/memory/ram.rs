@@ -3,8 +3,8 @@ use super::Memory;
 pub struct Ram(Vec<u8>);
 
 impl Ram {
-    pub fn new(size: usize) -> Self {
-        Self(vec![0; size])
+    pub fn new(size: u16) -> Self {
+        Self(vec![0; size.into()])
     }
 }
 
