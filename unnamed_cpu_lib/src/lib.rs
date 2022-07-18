@@ -2,12 +2,14 @@ mod memory;
 mod cpu;
 
 use memory::{Ram, Memory};
-use cpu::{
-    Cpu, 
+use cpu::Cpu;
+pub use cpu::{
+    Operation,
+    Instruction,
+    RegisterAliases,
+    Operand,
     Interrupt,
-    // Operation,
-};
-pub use cpu::Operation;  // for testing purposes
+};  // for testing purposes
 
 pub struct UnnamedVM {
     cpu: Cpu,
@@ -39,11 +41,9 @@ impl UnnamedVM {
                 */
                 let length = self.cpu.cpu_pop();
                 let address = self.cpu.cpu_pop();
-                let mut string = String::new();
                 for i in 0..length {
-                    string.push(self.ram.read_byte(address + i as u16) as char);
+                    print!("{}", self.ram.read_byte(address + i as u16) as char);
                 }
-                print!("{}", string);
             },
         }
     }

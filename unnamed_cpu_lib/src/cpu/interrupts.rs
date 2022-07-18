@@ -1,3 +1,5 @@
+#[derive(Debug)]
+#[repr(u16)]
 pub enum Interrupt {
     Print,
 }

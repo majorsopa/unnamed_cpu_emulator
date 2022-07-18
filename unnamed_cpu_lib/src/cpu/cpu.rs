@@ -36,7 +36,6 @@ impl Cpu {
                         self.ret();
                     },
                     Instruction::INT => {
-                        self.int();
                         return true;
                     },
                     _ => {
@@ -44,35 +43,35 @@ impl Cpu {
                     },
                 }
             },
-            Operation::Unary(instruction, register) => {
+            Operation::Unary(instruction, operand) => {
                 // implemenation of all unary instructions
                 match instruction {
                     Instruction::PUSH => {
-                        self.push(register.get_value());
+                        self.push(operand.get_value());
                     },
                     Instruction::POP => {
-                        self.pop(register.get_value());
+                        self.pop(operand.get_value());
                     },
                     Instruction::INC => {
-                        self.inc(register.get_value());
+                        self.inc(operand.get_value());
                     },
                     Instruction::DEC => {
-                        self.dec(register.get_value());
+                        self.dec(operand.get_value());
                     },
                     Instruction::JUMP => {
-                        self.jump(register.get_value());
+                        self.jump(operand.get_value());
                     },
                     Instruction::CALL => {
-                        self.call(register.get_value());
+                        self.call(operand.get_value());
                     },
                     Instruction::JEQ => {
-                        self.jeq(register.get_value());
+                        self.jeq(operand.get_value());
                     },
                     Instruction::JNE => {
-                        self.jne(register.get_value());
+                        self.jne(operand.get_value());
                     },
                     Instruction::NOT => {
-                        self.not(register.get_value());
+                        self.not(operand.get_value());
                     },
                     _ => {
                         panic!("unimplemented unary instruction: {:?}", instruction);
@@ -135,18 +134,20 @@ impl Cpu {
     }
 
     fn pop(&mut self, oprd: u16) {
+        let value = self.stack.pop(
+            &mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16),
+        );
         self.registers.set_register(
             oprd,
-            self.stack.pop(
-                &mut self.registers.get_register(RegisterAliases::StackPointer as u16),
-            ),
+            value,
         )
     }
 
     fn push(&mut self, oprd: u16) {
+        let value = self.registers.get_register(oprd);
         self.stack.push(
-            &mut self.registers.get_register(RegisterAliases::StackPointer as u16),
-            self.registers.get_register(oprd),
+            &mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16),
+            value,
         )
     }
 
@@ -186,15 +187,6 @@ impl Cpu {
         if self.flags.get_flag(FlagAliases::Zero as u16) {
             self.jump(oprd);
         }
-    }
-
-    fn int(&mut self) {
-        self.registers.set_register(
-            RegisterAliases::InstructionPointer as u16,
-            self.stack.pop(
-                &mut self.registers.get_register(RegisterAliases::StackPointer as u16),
-            ),
-        );
     }
 
     fn jne(&mut self, oprd: u16) {
@@ -286,6 +278,6 @@ impl Cpu {
     }
 
     fn mov(&mut self, oprd: u16, oprd2: u16) {
-        self.registers.set_register(oprd, self.registers.get_register(oprd2));
+        *self.registers.get_mut_register(oprd) = oprd2;
     }
 }

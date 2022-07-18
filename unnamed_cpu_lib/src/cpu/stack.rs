@@ -2,8 +2,8 @@
 pub struct Stack([u16; 64]);
 
 impl Stack {
-    pub fn new() -> Stack {
-        Stack([0; 64])
+    pub fn new() -> Self {
+        Self([0; 64])
     }
     
     pub fn push(&mut self, stack_pointer: &mut u16, value: u16) {

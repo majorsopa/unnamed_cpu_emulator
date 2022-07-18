@@ -1,4 +1,5 @@
 #[derive(Debug)]
+#[repr(u16)]
 pub enum Instruction {
     PUSH,       // pushes to stack
     POP,        // pops from stack

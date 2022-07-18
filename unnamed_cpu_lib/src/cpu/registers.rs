@@ -29,6 +29,7 @@ impl Registers {
 }
 
 #[derive(Debug, Clone, Copy)]
+#[repr(u16)]
 pub enum RegisterAliases {
     // scratchable
     Accumulator,
