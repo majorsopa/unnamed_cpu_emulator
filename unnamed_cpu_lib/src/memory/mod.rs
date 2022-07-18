@@ -1,8 +1,6 @@
 mod ram;
-mod rom;
 
 pub use ram::Ram;
-pub use rom::Rom;
 
 trait Memory {
     fn get_buffer(&self) -> &Vec<u8>;
