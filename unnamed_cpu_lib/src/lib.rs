@@ -34,7 +34,7 @@ impl UnnamedVM {
     fn handle_interrupt(&mut self) {
         match Interrupt::from_u16(self.cpu.cpu_pop()) {
             Interrupt::Print => {
-                // top down of the stack for printing
+                // top-down of the stack for printing
                 /*
                 length of string to print
                 address of string to print
