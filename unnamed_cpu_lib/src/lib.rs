@@ -3,10 +3,11 @@ mod cpu;
 
 use memory::{Ram, Memory};
 use cpu::{
-    Cpu,
-    Operation, 
+    Cpu, 
     Interrupt,
+    // Operation,
 };
+pub use cpu::Operation;  // for testing purposes
 
 pub struct UnnamedVM {
     cpu: Cpu,

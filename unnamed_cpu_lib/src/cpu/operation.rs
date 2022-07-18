@@ -1,22 +1,22 @@
 use super::{RegisterAliases, Instruction};
 
-pub enum Operation<'a> {
+pub enum Operation {
     Nullary(Instruction),
-    Unary(Instruction, &'a mut RegisterAliases),
-    Binary(Instruction, &'a mut RegisterAliases, &'a mut Operand<'a>),
+    Unary(Instruction, Operand),
+    Binary(Instruction, Operand, Operand),
 }
 
 #[derive(Debug)]
-pub enum Operand<'a> {
-    Register(&'a mut RegisterAliases),
+pub enum Operand {
+    Register(RegisterAliases),
     Literal(u16),
     Address(u16),
 }
 
-impl Operand<'_> {
+impl Operand {
     pub fn get_value(&self) -> u16 {
         match self {
-            Operand::Register(register) => **register as u16,
+            Operand::Register(register) => *register as u16,
             Operand::Literal(literal) => *literal,
             Operand::Address(address) => *address,
         }

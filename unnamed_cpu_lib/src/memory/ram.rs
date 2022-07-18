@@ -4,7 +4,8 @@ pub struct Ram(Vec<u8>);
 
 impl Ram {
     pub fn new(size: u16) -> Self {
-        Self(vec![0; size.into()])
+        // Self(vec![0; size.into()])
+        Self(vec!['e' as u8; size as usize])  // for testing purposes
     }
 }
 

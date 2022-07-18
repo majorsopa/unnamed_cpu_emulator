@@ -44,78 +44,78 @@ impl Cpu {
                     },
                 }
             },
-            Operation::Unary(instruction, &mut register) => {
+            Operation::Unary(instruction, register) => {
                 // implemenation of all unary instructions
                 match instruction {
                     Instruction::PUSH => {
-                        self.push(register as u16);
+                        self.push(register.get_value());
                     },
                     Instruction::POP => {
-                        self.pop(register as u16);
+                        self.pop(register.get_value());
                     },
                     Instruction::INC => {
-                        self.inc(register as u16);
+                        self.inc(register.get_value());
                     },
                     Instruction::DEC => {
-                        self.dec(register as u16);
+                        self.dec(register.get_value());
                     },
                     Instruction::JUMP => {
-                        self.jump(register as u16);
+                        self.jump(register.get_value());
                     },
                     Instruction::CALL => {
-                        self.call(register as u16);
+                        self.call(register.get_value());
                     },
                     Instruction::JEQ => {
-                        self.jeq(register as u16);
+                        self.jeq(register.get_value());
                     },
                     Instruction::JNE => {
-                        self.jne(register as u16);
+                        self.jne(register.get_value());
                     },
                     Instruction::NOT => {
-                        self.not(register as u16);
+                        self.not(register.get_value());
                     },
                     _ => {
                         panic!("unimplemented unary instruction: {:?}", instruction);
                     },
                 }
             }
-            Operation::Binary(instruction, register, operand) => {
+            Operation::Binary(instruction, operand, operand2) => {
                 match instruction {
                     Instruction::CMP => {
-                        self.cmp(*register as u16, operand.get_value());
+                        self.cmp(operand.get_value(), operand2.get_value());
                     },
                     Instruction::ADD => {
-                        self.add(*register as u16, operand.get_value());
+                        self.add(operand.get_value(), operand2.get_value());
                     },
                     Instruction::SUB => {
-                        self.sub(*register as u16, operand.get_value());
+                        self.sub(operand.get_value(), operand2.get_value());
                     },
                     Instruction::MUL => {
-                        self.mul(*register as u16, operand.get_value());
+                        self.mul(operand.get_value(), operand2.get_value());
                     },
                     Instruction::DIV => {
-                        self.div(*register as u16, operand.get_value());
+                        self.div(operand.get_value(), operand2.get_value());
                     },
                     Instruction::AND => {
-                        self.and(*register as u16, operand.get_value());
+                        self.and(operand.get_value(), operand2.get_value());
                     },
                     Instruction::NAND => {
-                        self.nand(*register as u16, operand.get_value());
+                        self.nand(operand.get_value(), operand2.get_value());
                     },
                     Instruction::OR => {
-                        self.or(*register as u16, operand.get_value());
+                        self.or(operand.get_value(), operand2.get_value());
                     },
                     Instruction::XOR => {
-                        self.xor(*register as u16, operand.get_value());
+                        self.xor(operand.get_value(), operand2.get_value());
                     },
                     Instruction::SHL => {
-                        self.shl(*register as u16, operand.get_value());
+                        self.shl(operand.get_value(), operand2.get_value());
                     },
                     Instruction::SHR => {
-                        self.shr(*register as u16, operand.get_value());
+                        self.shr(operand.get_value(), operand2.get_value());
                     },
                     Instruction::MOV => {
-                        self.mov(*register as u16, operand.get_value());
+                        self.mov(operand.get_value(), operand2.get_value());
                     },
                     _ => {
                         panic!("unimplemented binary instruction: {:?}", instruction);
