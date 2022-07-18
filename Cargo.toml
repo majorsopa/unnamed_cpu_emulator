@@ -1,5 +1,5 @@
 [workspace]
 members = [
     "unnamed_cpu_lib",
-    "unnamed_cpu_bin",
+    "unnamed_cpu_runtime",
 ]

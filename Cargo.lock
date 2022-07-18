@@ -3,12 +3,12 @@
 version = 3
 
 [[package]]
-name = "unnamed_cpu_bin"
+name = "unnamed_cpu_lib"
+version = "0.1.0"
+
+[[package]]
+name = "unnamed_cpu_runtime"
 version = "0.1.0"
 dependencies = [
  "unnamed_cpu_lib",
 ]
-
-[[package]]
-name = "unnamed_cpu_lib"
-version = "0.1.0"
