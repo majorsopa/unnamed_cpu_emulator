@@ -1,2 +1,4 @@
-pub mod memory;
-pub mod cpu;
+mod memory;
+mod cpu;
+
+
