@@ -4,6 +4,7 @@ mod flags;
 mod stack;
 mod registers;
 mod operation;
+mod interrupts;
 
 use flags::Flags;
 use stack::Stack;
@@ -14,3 +15,4 @@ pub use registers::RegisterAliases;
 pub use instructions::Instruction;
 pub use flags::FlagAliases;
 pub use operation::{Operation, Operand};
+

@@ -109,6 +109,9 @@ impl Cpu {
                     Instruction::SHR => {
                         self.shr(*register as u16, operand.get_value());
                     },
+                    Instruction::MOV => {
+                        self.mov(*register as u16, operand.get_value());
+                    },
                     _ => {
                         panic!("unimplemented binary instruction: {:?}", instruction);
                     },
@@ -274,5 +277,9 @@ impl Cpu {
             oprd,
             self.registers.get_register(oprd) >> self.registers.get_register(oprd2),
         );
+    }
+
+    fn mov(&mut self, oprd: u16, oprd2: u16) {
+        self.registers.set_register(oprd, self.registers.get_register(oprd2));
     }
 }

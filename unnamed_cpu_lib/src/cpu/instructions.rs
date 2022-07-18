@@ -9,6 +9,7 @@ pub enum Instruction {
     JEQ,        // jumps to address if flag is set
     JNE,        // jumps to address if flag is not set
     INT,        // interrupts
+    MOV,        // moves value to register
 
 
     ADD,        // adds two values
