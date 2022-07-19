@@ -61,7 +61,7 @@ fn main() {
     let program_slice: &[u16] = &operation_slice_to_u16_vec(&program);
 
     vm.write_program(program_slice);
-    vm.run(0, program_slice.len() as u16 - 1);
+    vm.run(0, program_slice.len() as u16);
 }
 
 fn operation_slice_to_u16_vec(operations: &[Operation]) -> Vec<u16> {

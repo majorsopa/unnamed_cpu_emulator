@@ -36,7 +36,7 @@ impl UnnamedVM {
         let mut start_address_mut = start_address;
         let mut operations: Vec<Operation> = Vec::new();
 
-        while start_address_mut <= start_address + program_length {
+        while start_address_mut < start_address * 2 + program_length * 2{
             operations.push(self.load_operation(&mut start_address_mut));
         }
 
@@ -49,29 +49,26 @@ impl UnnamedVM {
     // function to load an Operation from the memory and handle the operation with `handle_operation`
     fn load_operation(&mut self, operation_address: &mut u16) -> Operation {  // this does not work perfectly
         let (operation_length, instruction) = self.get_operation_length_and_instruction(*operation_address);
-        //println!("{:?}", instruction);
         let ret_operation = match operation_length - 1 {
             0 => Operation::Nullary(instruction),
             1 => Operation::Unary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(*operation_address + 1))
+                Operand::from_u16(self.ram.read_word(*operation_address + 2)),  // wrong sometimes
             ),
             2 => Operation::Binary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(*operation_address + 1)),
-                Operand::from_u16(self.ram.read_word(*operation_address + 2))
+                Operand::from_u16(self.ram.read_word(*operation_address + 2)),  // wrong sometimes
+                Operand::from_u16(self.ram.read_word(*operation_address + 4)),  // wrong sometimes
             ),
             _ => panic!("Invalid operation length"),
         };
-        *operation_address += operation_length;
+        *operation_address += operation_length * 2;
         ret_operation
     }
 
     // function to determine how far ahead to read to form an operation
     fn get_operation_length_and_instruction(&self, operation_address: u16) -> (u16, Instruction) {
-        // todo: make this not think every operation is a push
-        let instruction = Instruction::from_u16(self.ram.read_word(operation_address * 2));
-        println!("{:?}", self.ram.read_word(operation_address));
+        let instruction = Instruction::from_u16(self.ram.read_word(operation_address));
         (
             match instruction {
                 Instruction::RET => 1,
