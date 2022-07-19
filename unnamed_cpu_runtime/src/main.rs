@@ -30,7 +30,7 @@ fn main() {
         Operation::Binary(
             Instruction::MOV,
             Operand::from_register(RegisterAliases::Scratch0),
-            Operand::from_u16(10),
+            Operand::from_u16(8),
         ),
 
         // push scratch0 to the stack
@@ -61,6 +61,7 @@ fn main() {
     let program_slice: &[u16] = &operation_slice_to_u16_vec(&program);
 
     vm.load_program(program_slice);
+    vm.run(0, program_slice.len() as u16 - 1);
 }
 
 fn operation_slice_to_u16_vec(operations: &[Operation]) -> Vec<u16> {

@@ -26,8 +26,10 @@ impl UnnamedVM {
 
     // function to load a program into the memory
     pub fn load_program(&mut self, program: &[u16]) {
-        for (i, instruction) in program.iter().enumerate() {
-            self.ram.write_word(i as u16, *instruction);
+        let mut i: u16 = 0;
+        for instruction in program.iter() {
+            self.ram.write_word(i, *instruction);
+            i += 2;
         }
     }
 
@@ -41,6 +43,7 @@ impl UnnamedVM {
         }
 
         for operation in operations {
+            println!("{:?}", operation);
             self.handle_operation(operation);
         }
     }
@@ -48,7 +51,7 @@ impl UnnamedVM {
     // function to load an Operation from the memory and handle the operation with `handle_operation`
     fn load_operation(&mut self, operation_address: &mut u16) -> Operation {
         let (operation_length, instruction) = self.get_operation_length_and_instruction(*operation_address);
-        match operation_length - 1 {
+        let ret_operation = match operation_length - 1 {
             0 => Operation::Nullary(instruction),
             1 => Operation::Unary(
                 instruction,
@@ -60,11 +63,14 @@ impl UnnamedVM {
                 Operand::from_u16(self.ram.read_word(*operation_address + 2))
             ),
             _ => panic!("Invalid operation length"),
-        }
+        };
+        *operation_address += operation_length;
+        ret_operation
     }
 
     // function to determine how far ahead to read to form an operation
     fn get_operation_length_and_instruction(&self, operation_address: u16) -> (u16, Instruction) {
+        // todo: make this not think every operation is a push
         let instruction = Instruction::from_u16(self.ram.read_word(operation_address));
         (
             match instruction {
