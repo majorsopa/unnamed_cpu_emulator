@@ -2,4 +2,5 @@
 members = [
     "unnamed_cpu_lib",
     "unnamed_cpu_runtime",
+    "unnamed_cpu_assembler",
 ]
