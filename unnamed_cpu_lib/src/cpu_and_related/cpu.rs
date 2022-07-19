@@ -210,11 +210,28 @@ impl Cpu {
         );
     }
 
+    // set the carry, zero, and negative flags
+    fn set_flags(&mut self, oprd: u16, oprd2: u16) {
+        self.flags.set_flag_to_bool(
+            FlagAliases::Carry as u16,
+            self.registers.get_register(oprd) < self.registers.get_register(oprd2),
+        );
+        self.flags.set_flag_to_bool(
+            FlagAliases::Zero as u16,
+            self.registers.get_register(oprd) == self.registers.get_register(oprd2),
+        );
+        self.flags.set_flag_to_bool(
+            FlagAliases::Negative as u16,
+            self.registers.get_register(oprd) & 0x8000 != 0,
+        );
+    }
+
     fn add(&mut self, oprd: u16, oprd2: u16) {
         self.registers.set_register(
             oprd,
             self.registers.get_register(oprd) + self.registers.get_register(oprd2),
         );
+        self.set_flags(oprd, oprd2);
     }
 
     fn sub(&mut self, oprd: u16, oprd2: u16) {
@@ -222,6 +239,7 @@ impl Cpu {
             oprd,
             self.registers.get_register(oprd) - self.registers.get_register(oprd2),
         );
+        self.set_flags(oprd, oprd2);
     }
 
     fn mul(&mut self, oprd: u16, oprd2: u16) {
@@ -229,6 +247,7 @@ impl Cpu {
             oprd,
             self.registers.get_register(oprd) * self.registers.get_register(oprd2),
         );
+        self.set_flags(oprd, oprd2);
     }
 
     // leaves remainder in oprd2
@@ -241,6 +260,7 @@ impl Cpu {
             oprd2,
             self.registers.get_register(oprd) % self.registers.get_register(oprd2),
         );
+        self.set_flags(oprd, oprd2);
     }
 
     fn and(&mut self, oprd: u16, oprd2: u16) {
