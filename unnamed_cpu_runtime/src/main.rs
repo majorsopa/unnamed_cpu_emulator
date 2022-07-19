@@ -26,7 +26,7 @@ fn main() {
             Operand::from_register(RegisterAliases::Scratch0),
         ),
 
-        // move the length of the string needing printing, for testing it'll be 8, to scratch0
+        // move the length of the string needing printing to scratch0
         Operation::Binary(
             Instruction::MOV,
             Operand::from_register(RegisterAliases::Scratch0),
