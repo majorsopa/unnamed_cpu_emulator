@@ -41,7 +41,6 @@ impl UnnamedVM {
         }
 
         for operation in operations {
-            println!("{:?}", operation);
             self.handle_operation(operation);
         }
     }

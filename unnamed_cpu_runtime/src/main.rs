@@ -7,7 +7,7 @@ use unnamed_cpu_lib::{
 };
 
 
-const MEMORY_AMOUNT: u16 = 32;
+const MEMORY_AMOUNT: u16 = 128;
 
 fn main() {
     let mut vm = UnnamedVM::new(MEMORY_AMOUNT);
@@ -17,7 +17,7 @@ fn main() {
         Operation::Binary(
             Instruction::MOV,
             Operand::from_register(RegisterAliases::Scratch0),
-            Operand::from_u16(0),
+            Operand::from_u16(100),
         ),
 
         // push scratch0 to the stack
