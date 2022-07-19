@@ -27,7 +27,7 @@ fn main() {
             ),
         ]
     };
-    // for every character in "Hello world!", call `mov_character_to_scratch0_and_push_operation` and append it to a Vec
+    // for every character in the string to print, call `mov_character_to_scratch0_and_push_operation` and append it to a Vec
     let mut mov_hello_world_to_stack_operations: Vec<Operation> = vec![];
     for character in TO_PRINT.chars().rev() {
         mov_hello_world_to_stack_operations.extend(mov_character_to_scratch0_and_push_operation(character));
