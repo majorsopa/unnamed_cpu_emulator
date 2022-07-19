@@ -106,7 +106,7 @@ impl UnnamedVM {
 
     fn handle_interrupt(&mut self) {
         match Interrupt::from_u16(self.cpu.cpu_pop()) {
-            Interrupt::Print => {
+            Interrupt::PRINT => {
                 // top-down of the stack for printing
                 /*
                 length of string to print
@@ -116,6 +116,21 @@ impl UnnamedVM {
                 let address = self.cpu.cpu_pop();
                 for i in 0..length {
                     print!("{}", self.ram.read_byte(address + i as u16) as char);
+                }
+            },
+            Interrupt::MOV_TO_RAM => {
+                // top-down of the stack for moving to RAM
+                /*
+                length of data to move (in u16's)
+                address of where to put the data
+                data word 0
+                data word 1
+                ...
+                */
+                let length = self.cpu.cpu_pop();
+                let address = self.cpu.cpu_pop();
+                for i in 0..length {
+                    self.ram.write_word(address + i as u16, self.cpu.cpu_pop());
                 }
             },
         }
