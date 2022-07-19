@@ -1,9 +1,9 @@
 mod memory;
-mod cpu;
+mod cpu_and_related;
 
 use memory::{Ram, Memory};
-use cpu::Cpu;
-pub use cpu::{
+use cpu_and_related::Cpu;
+pub use cpu_and_related::{
     Operation,
     Instruction,
     RegisterAliases,

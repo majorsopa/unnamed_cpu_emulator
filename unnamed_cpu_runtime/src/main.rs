@@ -3,7 +3,8 @@ use unnamed_cpu_lib::{
     Operation,
     Instruction,
     RegisterAliases,
-    Operand, Interrupt,
+    Operand,
+    Interrupt,
 };
 
 

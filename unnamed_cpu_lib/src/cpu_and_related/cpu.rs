@@ -24,7 +24,7 @@ impl Cpu {
     }
 
     pub fn cpu_pop(&mut self) -> u16 {
-        self.stack.pop(&mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16))
+        self.stack.pop(self.registers.get_mut_register(RegisterAliases::StackPointer as u16))
     }
 
     pub fn get_instruction_pointer(&self) -> u16 {
@@ -143,7 +143,7 @@ impl Cpu {
 
     fn pop(&mut self, oprd: u16) {
         let value = self.stack.pop(
-            &mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16),
+            self.registers.get_mut_register(RegisterAliases::StackPointer as u16),
         );
         self.registers.set_register(
             oprd,
@@ -154,7 +154,7 @@ impl Cpu {
     fn push(&mut self, oprd: u16) {
         let value = self.registers.get_register(oprd);
         self.stack.push(
-            &mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16),
+            self.registers.get_mut_register(RegisterAliases::StackPointer as u16),
             value,
         )
     }
