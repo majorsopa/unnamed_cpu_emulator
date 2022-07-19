@@ -31,26 +31,40 @@ impl UnnamedVM {
         }
     }
 
+    // loads the program and runs it
+    pub fn run(&mut self, start_address: u16, program_length: u16) {
+        let mut start_address_mut = start_address;
+        let mut operations: Vec<Operation> = Vec::new();
+
+        while start_address_mut < start_address + program_length {
+            operations.push(self.load_operation(&mut start_address_mut));
+        }
+
+        for operation in operations {
+            self.handle_operation(operation);
+        }
+    }
+
     // function to load an Operation from the memory and handle the operation with `handle_operation`
-    pub fn load_operation(&mut self, operation_address: u16) -> Operation {
-        let (operation_length, instruction) = self.get_operation_length_and_instruction(operation_address);
+    fn load_operation(&mut self, operation_address: &mut u16) -> Operation {
+        let (operation_length, instruction) = self.get_operation_length_and_instruction(*operation_address);
         match operation_length - 1 {
             0 => Operation::Nullary(instruction),
             1 => Operation::Unary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(operation_address + 1))
+                Operand::from_u16(self.ram.read_word(*operation_address + 1))
             ),
             2 => Operation::Binary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(operation_address + 1)),
-                Operand::from_u16(self.ram.read_word(operation_address + 2))
+                Operand::from_u16(self.ram.read_word(*operation_address + 1)),
+                Operand::from_u16(self.ram.read_word(*operation_address + 2))
             ),
             _ => panic!("Invalid operation length"),
         }
     }
 
     // function to determine how far ahead to read to form an operation
-    pub fn get_operation_length_and_instruction(&self, operation_address: u16) -> (u16, Instruction) {
+    fn get_operation_length_and_instruction(&self, operation_address: u16) -> (u16, Instruction) {
         let instruction = Instruction::from_u16(self.ram.read_word(operation_address));
         (
             match instruction {
