@@ -35,16 +35,10 @@ impl UnnamedVM {
     pub fn run(&mut self, start_address: u16, program_length: u16) {
         *self.cpu.get_instruction_pointer_mut() = start_address;
 
-        let mut operations: Vec<Operation> = Vec::new();
-
         while self.cpu.get_instruction_pointer() < start_address * 2 + program_length * 2 {
             let (inc_amount, operation) = self.load_operation(self.cpu.get_instruction_pointer());
             *self.cpu.get_instruction_pointer_mut() += inc_amount;
-            operations.push(operation);
-        }
-
-        for operation in operations {
-            self.handle_operation(operation);
+            self.handle_operation(operation)
         }
     }
 
@@ -56,12 +50,12 @@ impl UnnamedVM {
             0 => Operation::Nullary(instruction),
             1 => Operation::Unary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(operation_address + 2)),  // wrong sometimes
+                Operand::from_u16(self.ram.read_word(operation_address + 2)),
             ),
             2 => Operation::Binary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(operation_address + 2)),  // wrong sometimes
-                Operand::from_u16(self.ram.read_word(operation_address + 4)),  // wrong sometimes
+                Operand::from_u16(self.ram.read_word(operation_address + 2)),
+                Operand::from_u16(self.ram.read_word(operation_address + 4)),
             ),
             _ => panic!("Invalid operation length"),
         };
