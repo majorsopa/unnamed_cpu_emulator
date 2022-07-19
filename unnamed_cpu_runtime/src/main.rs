@@ -13,7 +13,7 @@ fn main() {
     let mut vm = UnnamedVM::new(MEMORY_AMOUNT);
 
     let program = [
-        // move 0 to scratch0 to just print the start of the memory
+        // move address to start printing from to scratch0
         Operation::Binary(
             Instruction::MOV,
             Operand::from_register(RegisterAliases::Scratch0),
