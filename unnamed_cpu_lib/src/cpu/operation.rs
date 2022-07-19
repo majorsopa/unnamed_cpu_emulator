@@ -7,31 +7,40 @@ pub enum Operation {
     Binary(Instruction, Operand, Operand),
 }
 
-#[derive(Debug)]
-pub enum Operand {
-    Register(RegisterAliases),
-    Literal(u16),
-    Address(u16),
+impl Operation {
+    pub fn to_u16_vec(&self) -> Vec<u16> {
+        let mut result: Vec<u16> = Vec::new();
+        match self {
+            Operation::Nullary(instruction) => {
+                result.push(*instruction as u16);
+            }
+            Operation::Unary(instruction, operand) => {
+                result.push(*instruction as u16);
+                result.push(operand.get_value());
+            }
+            Operation::Binary(instruction, operand1, operand2) => {
+                result.push(*instruction as u16);
+                result.push(operand1.get_value());
+                result.push(operand2.get_value());
+            }
+        }
+        result
+    }
 }
+
+#[derive(Debug)]
+pub struct Operand(u16);
 
 impl Operand {
     pub fn get_value(&self) -> u16 {
-        match self {
-            Self::Register(register) => *register as u16,
-            Self::Literal(literal) => *literal,
-            Self::Address(address) => *address,
-        }
+        self.0
     }
 
     pub fn from_register(register: RegisterAliases) -> Self {
-        Self::Register(register)
+        Self(register as u16)
     }
 
-    pub fn from_literal(literal: u16) -> Self {
-        Self::Literal(literal)
-    }
-
-    pub fn from_address(address: u16) -> Self {
-        Self::Address(address)
+    pub fn from_u16(value: u16) -> Self {
+        Self(value)
     }
 }
