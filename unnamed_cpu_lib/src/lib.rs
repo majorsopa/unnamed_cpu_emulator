@@ -25,7 +25,7 @@ impl UnnamedVM {
     }
 
     // function to load a program into the memory
-    pub fn write_program(&mut self, program: &[u16]) {  // this works perfectly
+    pub fn write_program(&mut self, program: &[u16]) {
         for (i, instruction) in program.iter().enumerate() {
             self.ram.write_word(i as u16 * 2, *instruction);
         }
@@ -33,11 +33,14 @@ impl UnnamedVM {
 
     // loads the program and runs it
     pub fn run(&mut self, start_address: u16, program_length: u16) {
-        let mut start_address_mut = start_address;
+        *self.cpu.get_instruction_pointer_mut() = start_address;
+
         let mut operations: Vec<Operation> = Vec::new();
 
-        while start_address_mut < start_address * 2 + program_length * 2{
-            operations.push(self.load_operation(&mut start_address_mut));
+        while self.cpu.get_instruction_pointer() < start_address * 2 + program_length * 2 {
+            let (inc_amount, operation) = self.load_operation(self.cpu.get_instruction_pointer());
+            *self.cpu.get_instruction_pointer_mut() += inc_amount;
+            operations.push(operation);
         }
 
         for operation in operations {
@@ -46,23 +49,23 @@ impl UnnamedVM {
     }
 
     // function to load an Operation from the memory and handle the operation with `handle_operation`
-    fn load_operation(&mut self, operation_address: &mut u16) -> Operation {  // this does not work perfectly
-        let (operation_length, instruction) = self.get_operation_length_and_instruction(*operation_address);
+    // returns the amount to increment the instruction pointer by and the Operation
+    fn load_operation(&mut self, operation_address: u16) -> (u16, Operation) {
+        let (operation_length, instruction) = self.get_operation_length_and_instruction(operation_address);
         let ret_operation = match operation_length - 1 {
             0 => Operation::Nullary(instruction),
             1 => Operation::Unary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(*operation_address + 2)),  // wrong sometimes
+                Operand::from_u16(self.ram.read_word(operation_address + 2)),  // wrong sometimes
             ),
             2 => Operation::Binary(
                 instruction,
-                Operand::from_u16(self.ram.read_word(*operation_address + 2)),  // wrong sometimes
-                Operand::from_u16(self.ram.read_word(*operation_address + 4)),  // wrong sometimes
+                Operand::from_u16(self.ram.read_word(operation_address + 2)),  // wrong sometimes
+                Operand::from_u16(self.ram.read_word(operation_address + 4)),  // wrong sometimes
             ),
             _ => panic!("Invalid operation length"),
         };
-        *operation_address += operation_length * 2;
-        ret_operation
+        (operation_length * 2, ret_operation)
     }
 
     // function to determine how far ahead to read to form an operation

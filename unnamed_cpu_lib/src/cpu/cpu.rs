@@ -27,6 +27,14 @@ impl Cpu {
         self.stack.pop(&mut self.registers.get_mut_register(RegisterAliases::StackPointer as u16))
     }
 
+    pub fn get_instruction_pointer(&self) -> u16 {
+        self.registers.get_register(RegisterAliases::InstructionPointer as u16)
+    }
+
+    pub fn get_instruction_pointer_mut(&mut self) -> &mut u16 {
+        self.registers.get_mut_register(RegisterAliases::InstructionPointer as u16)
+    }
+
     // the main implementation of the CPU
     pub fn perform_operation(&mut self, operation: Operation) -> bool {
         match operation {
