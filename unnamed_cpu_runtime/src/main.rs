@@ -7,7 +7,7 @@ use unnamed_cpu_lib::{
 };
 
 
-const MEMORY_AMOUNT: u16 = 128;
+const MEMORY_AMOUNT: u16 = 32;
 
 fn main() {
     let mut vm = UnnamedVM::new(MEMORY_AMOUNT);
@@ -60,7 +60,7 @@ fn main() {
 
     let program_slice: &[u16] = &operation_slice_to_u16_vec(&program);
 
-    vm.load_program(program_slice);
+    vm.write_program(program_slice);
     vm.run(0, program_slice.len() as u16 - 1);
 }
 

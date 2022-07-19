@@ -16,11 +16,13 @@ pub trait Memory {
     }
 
     fn read_word(&self, address: u16) -> u16 {
-        (self.read_byte(address) as u16) << 8 | self.read_byte(address + 1) as u16
+        // reads 2 bytes from the memory and returns them concatenated into a u16
+        (self.read_byte(address) as u16) | (self.read_byte(address + 1) as u16)
     }
 
     fn write_word(&mut self, address: u16, value: u16) {
-        self.write_byte(address, (value >> 8) as u8);
-        self.write_byte(address + 1, value as u8);
+        // writes the 2 bytes to the memory in seperate 2 `write_byte`s
+        self.write_byte(address, value as u8);
+        self.write_byte(address + 1, (value >> 8) as u8);
     }
 }

@@ -25,11 +25,9 @@ impl UnnamedVM {
     }
 
     // function to load a program into the memory
-    pub fn load_program(&mut self, program: &[u16]) {
-        let mut i: u16 = 0;
-        for instruction in program.iter() {
-            self.ram.write_word(i, *instruction);
-            i += 2;
+    pub fn write_program(&mut self, program: &[u16]) {  // this works perfectly
+        for (i, instruction) in program.iter().enumerate() {
+            self.ram.write_word(i as u16 * 2, *instruction);
         }
     }
 
@@ -38,7 +36,7 @@ impl UnnamedVM {
         let mut start_address_mut = start_address;
         let mut operations: Vec<Operation> = Vec::new();
 
-        while start_address_mut < start_address + program_length {
+        while start_address_mut <= start_address + program_length {
             operations.push(self.load_operation(&mut start_address_mut));
         }
 
@@ -49,8 +47,9 @@ impl UnnamedVM {
     }
 
     // function to load an Operation from the memory and handle the operation with `handle_operation`
-    fn load_operation(&mut self, operation_address: &mut u16) -> Operation {
+    fn load_operation(&mut self, operation_address: &mut u16) -> Operation {  // this does not work perfectly
         let (operation_length, instruction) = self.get_operation_length_and_instruction(*operation_address);
+        //println!("{:?}", instruction);
         let ret_operation = match operation_length - 1 {
             0 => Operation::Nullary(instruction),
             1 => Operation::Unary(
@@ -71,7 +70,8 @@ impl UnnamedVM {
     // function to determine how far ahead to read to form an operation
     fn get_operation_length_and_instruction(&self, operation_address: u16) -> (u16, Instruction) {
         // todo: make this not think every operation is a push
-        let instruction = Instruction::from_u16(self.ram.read_word(operation_address));
+        let instruction = Instruction::from_u16(self.ram.read_word(operation_address * 2));
+        println!("{:?}", self.ram.read_word(operation_address));
         (
             match instruction {
                 Instruction::RET => 1,
