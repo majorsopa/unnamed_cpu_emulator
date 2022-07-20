@@ -19,7 +19,14 @@ pub fn clean_line(line: &str) -> String {
     ret_line.trim_end().to_string()  // the line with comments removed
 }
 
-pub fn parse_operation(line: &str) -> Operation {
+pub fn parse_operation(line: &str) -> Option<Operation> {
+    if line.is_empty()
+    || line.starts_with(";")
+    || line.starts_with("\n")
+    || line.starts_with("\r") {
+        return None;
+    }
+
     let clean_line = clean_line(line);
     let mut clean_line_peekable = clean_line.chars().peekable();
 
@@ -94,9 +101,11 @@ pub fn parse_operation(line: &str) -> Operation {
         }
         // confirmed to not be a register or [register] anymore
         // could still be an address, string literal, or integer literal
-        if let Ok(operand) = match_address(&*operand_str) {
-            operands.push(Operand::from_u16(operand));
-            continue;
+        if operand_str.len() > 2 {
+            if let Ok(operand) = match_address(&*operand_str) {
+                operands.push(Operand::from_u16(operand));
+                continue;
+            }
         }
         // not an address, so must be a literal (string or integer)
         if let Some(operand) = match_string(&*operand_str) {
@@ -105,12 +114,12 @@ pub fn parse_operation(line: &str) -> Operation {
             operands.push(match_integer(&*operand_str));  // will panic if invalid
         }
     }
-    match operands.len() {
+    Some(match operands.len() {
         0 => Operation::Nullary(instruction),
         1 => Operation::Unary(instruction, operands[0]),
         2 => Operation::Binary(instruction, operands[0], operands[1]),
         _ => panic!("invalid operand amount: {}", operands.len()),
-    }
+    })
 }
 
 fn match_register(operand: &str) -> Option<Operand> {
