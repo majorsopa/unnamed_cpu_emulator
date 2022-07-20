@@ -9,7 +9,7 @@ pub use cpu_and_related::{
     RegisterAliases,
     Operand,
     Interrupt,
-};  // for testing purposes
+};
 
 pub struct UnnamedVM {
     cpu: Cpu,
@@ -66,33 +66,7 @@ impl UnnamedVM {
     fn get_operation_length_and_instruction(&self, operation_address: u16) -> (u16, Instruction) {
         let instruction = Instruction::from_u16(self.ram.read_word(operation_address));
         (
-            match instruction {
-                Instruction::RET => 1,
-                Instruction::INT => 1,
-
-                Instruction::PUSH => 2,
-                Instruction::POP => 2,
-                Instruction::JUMP => 2,
-                Instruction::CALL => 2,
-                Instruction::JEQ => 2,
-                Instruction::JNE => 2,
-                Instruction::INC => 2,
-                Instruction::DEC => 2,
-                Instruction::NOT => 2,
-                
-                Instruction::CMP => 3,
-                Instruction::MOV => 3,
-                Instruction::ADD => 3,
-                Instruction::SUB => 3,
-                Instruction::MUL => 3,
-                Instruction::DIV => 3,
-                Instruction::AND => 3,
-                Instruction::NAND => 3,
-                Instruction::OR => 3,
-                Instruction::XOR => 3,
-                Instruction::SHL => 3,
-                Instruction::SHR => 3,
-            },
+            get_instruction_length(instruction),
             instruction,
         )
     }
@@ -134,5 +108,35 @@ impl UnnamedVM {
                 }
             },
         }
+    }
+}
+
+pub fn get_instruction_length(instruction: Instruction) -> u16 {
+    match instruction {
+        Instruction::RET => 1,
+        Instruction::INT => 1,
+
+        Instruction::PUSH => 2,
+        Instruction::POP => 2,
+        Instruction::JUMP => 2,
+        Instruction::CALL => 2,
+        Instruction::JEQ => 2,
+        Instruction::JNE => 2,
+        Instruction::INC => 2,
+        Instruction::DEC => 2,
+        Instruction::NOT => 2,
+        
+        Instruction::CMP => 3,
+        Instruction::MOV => 3,
+        Instruction::ADD => 3,
+        Instruction::SUB => 3,
+        Instruction::MUL => 3,
+        Instruction::DIV => 3,
+        Instruction::AND => 3,
+        Instruction::NAND => 3,
+        Instruction::OR => 3,
+        Instruction::XOR => 3,
+        Instruction::SHL => 3,
+        Instruction::SHR => 3,
     }
 }

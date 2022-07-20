@@ -41,4 +41,5 @@ pub enum RegisterAliases {
     StackPointer,
     ReturnAddress,
     InstructionPointer,
+    // add base address eventually
 }

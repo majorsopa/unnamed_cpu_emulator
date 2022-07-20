@@ -28,7 +28,7 @@ impl Operation {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Operand(u16);
 
 impl Operand {
