@@ -1,4 +1,4 @@
 target/
-in.unc
-output.unce
+*.unc
+*.unce
 launch.json

@@ -3,7 +3,7 @@ use std::{fs::File, io::Write};
 use unnamed_cpu_lib::Operation;
 
 pub fn write_file(input: Vec<Operation>) {
-    let mut file = File::create("output.unce").unwrap();
+    let mut file = File::create("out.unce").unwrap();
     for operation in input {
         let operation = operation.to_u16_vec();
         let mut line = String::new();
