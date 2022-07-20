@@ -99,8 +99,8 @@ pub fn parse_operation(line: &str) -> Operation {
             continue;
         }
         // not an address, so must be a literal (string or integer)
-        if let Some(operand_vec) = match_string(&*operand_str) {
-            operands.extend(operand_vec);
+        if let Some(operand) = match_string(&*operand_str) {
+            operands.push(operand);
         } else {
             operands.push(match_integer(&*operand_str));  // will panic if invalid
         }
@@ -128,33 +128,24 @@ fn match_register(operand: &str) -> Option<Operand> {
 }
 
 // takes a string literal
-// example: `"Hello world!"`
-// returns a vector of Operands of each character in the string as u16
-fn match_string(operand: &str) -> Option<Vec<Operand>> {
-    let mut operands: Vec<Operand> = Vec::new();
-    if operand.is_empty() {
+// example: `"H"`
+// returns the Operand of the character as u16
+fn match_string(operand: &str) -> Option<Operand> {
+    if operand.is_empty() || operand.len() > 3 {
         return None;
     }
     let mut operand = operand.chars();
     if operand.next().unwrap() != '"' {
         return None;
     }
-    for character in operand {
-        if character == '"' {
-            break;
-        } else {
-            operands.push(Operand::from_u16(character as u16));
-        }
-    }
-    Some(operands)
+    Some(Operand::from_u16(operand.next().unwrap() as u16))
 }
 
 // match an integer literal
 // will panic if the literal is not a valid integer
 // that's okay because it's the last thing to be checked
 fn match_integer(operand: &str) -> Operand {
-    let operand = operand.parse::<u16>().unwrap();
-    Operand::from_u16(operand)
+    Operand::from_u16(operand.parse::<u16>().unwrap())
 }
 
 // converts a hex address to a u16
