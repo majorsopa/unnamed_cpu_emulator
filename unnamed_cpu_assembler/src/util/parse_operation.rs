@@ -21,9 +21,9 @@ pub fn clean_line(line: &str) -> String {
 
 pub fn parse_operation(line: &str) -> Option<Operation> {
     if line.is_empty()
-    || line.starts_with(";")
-    || line.starts_with("\n")
-    || line.starts_with("\r") {
+    || line.starts_with(';')
+    || line.starts_with('\n')
+    || line.starts_with('\r') {
         return None;
     }
 

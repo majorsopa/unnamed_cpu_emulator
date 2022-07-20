@@ -1,13 +1,6 @@
 use std::fs::read_to_string;
 
-use unnamed_cpu_lib::{
-    UnnamedVM,
-    Operation,
-    Instruction,
-    RegisterAliases,
-    Operand,
-    Interrupt,
-};
+use unnamed_cpu_lib::UnnamedVM;
 
 
 const MEMORY_AMOUNT: u16 = 512;
