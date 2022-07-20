@@ -8,15 +8,15 @@ use unnamed_cpu_lib::{
 
 // returns the line without unneeded whitespace and comments
 pub fn clean_line(line: &str) -> String {
-    let mut clean_line = line.trim_start().to_string();  // the line with extra whitespace removed
-    for character in line.chars() {
+    let mut ret_line = String::new();
+    for character in line.trim_start().to_string().chars() {
         if character == ';' {
             break;
         } else {
-            clean_line.push(character);
+            ret_line.push(character);
         }
     }
-    clean_line.trim_end().to_string()  // the line with comments removed
+    ret_line.trim_end().to_string()  // the line with comments removed
 }
 
 pub fn parse_operation(line: &str) -> Operation {
