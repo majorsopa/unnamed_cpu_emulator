@@ -33,3 +33,5 @@ because rust is the language i am most comfortable in.
 - [ ] register address vs register with square brackets
 
 - [ ] relative addressing
+
+- [ ] escape code support
