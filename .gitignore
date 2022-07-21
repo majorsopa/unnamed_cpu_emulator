@@ -1,4 +1,4 @@
 target/
-*.unc
-*.unce
+in.unc
+out.unce
 launch.json
