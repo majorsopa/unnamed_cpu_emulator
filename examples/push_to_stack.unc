@@ -1,0 +1,5 @@
+; this is a comment
+
+
+mov ax "a"  ; this is also a comment
+push ax

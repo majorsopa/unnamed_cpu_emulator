@@ -1,0 +1,61 @@
+mov ax 10       ; newline character in decimal (escape codes are not yet supported)
+push ax
+
+mov ax "!"
+push ax
+
+mov ax "d"
+push ax
+
+mov ax "l"
+push ax
+
+mov ax "r"
+push ax
+
+mov ax "o"
+push ax
+
+mov ax "w"
+push ax
+
+mov ax " "
+push ax
+
+mov ax "o"
+push ax
+
+mov ax "l"
+push ax
+
+mov ax "l"
+push ax
+
+mov ax "e"
+push ax
+
+mov ax "H"
+push ax
+
+mov ax 0x1F4
+push ax
+
+mov ax 13
+push ax
+
+mov ax 1
+push ax
+
+int
+
+
+mov ax 0x1F4
+push ax
+
+mov ax 26
+push ax
+
+mov ax 0
+push ax
+
+int

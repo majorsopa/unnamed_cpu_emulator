@@ -1,0 +1,34 @@
+; top-down of the stack for printing before calling interrupt
+;
+; 0 (interrupt code)
+; length of thing to print in bytes (characters * 2)
+; start address of thing to print
+
+
+; moving the string into memory
+mov ax "c"
+push ax
+
+mov ax 2
+push ax
+
+mov ax 0x64
+push ax
+
+mov ax 1
+push ax
+
+int
+
+
+; printing happens here
+mov ax 0x64
+push ax
+
+mov ax 2
+push ax
+
+mov ax 0
+push ax
+
+int

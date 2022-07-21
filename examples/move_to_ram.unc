@@ -1,0 +1,21 @@
+; top-down of the stack for moving to ram before calling interrupt
+;
+; 1 (interrupt code)
+; length of thing to move
+; address to move to
+; start of thing to move
+
+
+mov ax "b"      ; thing to move to ram
+push ax
+
+mov ax 0x1F4    ; address to move it to in ram (absolute, not relative)
+push ax
+
+mov ax 1        ; length of thing to move to ram
+push ax
+
+mov ax 1        ; interrupt code for moving to ram
+push ax
+
+int             ; call interrupt
