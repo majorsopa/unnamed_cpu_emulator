@@ -77,13 +77,15 @@ pub fn parse_operation(line: &str) -> Option<Operation> {
     let mut operands: Vec<Operand> = Vec::new();
     for _ in 0..operand_amount {
         let mut operand_str = String::new();
+        let mut previous_character: Option<char> = None;
         while clean_line_peekable.peek().is_some() {
             let character = clean_line_peekable.next().unwrap();  // maybe make unsafe unchecked in the future
-            if character == ' ' {
+            if character == ' ' && previous_character != Some('"') {
                 break;
             } else {
                 operand_str.push(character);
             }
+            previous_character = Some(character);
         }
         if let Some(operand) = match_register(&*operand_str) {
             operands.push(operand);
